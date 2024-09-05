@@ -14,7 +14,7 @@ internal class DefenceTree
         UserCredentials = 20,
         Other = 5
     }
-
+    //פונקציה שקוראת קובץ json של NODE
     public static List<Node> InsertFromJson()
     {
         string filePath = @"C:\Users\Lenovo\Desktop\AA\BinaryTreeTest\BinaryTreeTest\NodesFile.json";
@@ -29,8 +29,11 @@ internal class DefenceTree
         List<Node> nodes = JsonSerializer.Deserialize<List<Node>>(jsonString);
 
         return nodes;
+
+        // O(n)
     }
 
+    //פונקצייה שרצה על כל ה NODE ומכניסה לעץ
     public static void CreateTree()
     {
         Root = new Node();
@@ -39,14 +42,17 @@ internal class DefenceTree
         {
             Insert(node);
         }
+        //O(n)
     }
 
-
+    //פונקציה שמייצרת NODE חדש
     public static void Insert(Node newNode)
     {
         Root = InsertNode(newNode, Root);
+        //O(n)
     }
 
+    //פונקציית עזר שמוצאת היכן להכניס את ה NODE החדש
     private static Node InsertNode(Node newNode, Node root)
     {
         if (root == null)
@@ -58,16 +64,11 @@ internal class DefenceTree
             root.Left = InsertNode(newNode, root.Left);
 
         return root;
+        //O(!n)
     }
 
-    public static void PrintInOrder(Node root)
-    {
-        if (root == null) return;
-        PrintInOrder(root.Left);
-        Console.Write(root.MinSeverity + " ");
-        PrintInOrder(root.Right);
-    }
-
+    
+    //פונקציית קריאה מ JSON של איומים
     public static List<Threats> InsertFromJsonThreats()
     {
         string filePath = @"C:\Users\Lenovo\Desktop\AA\BinaryTreeTest\BinaryTreeTest\Threats.json";
@@ -82,11 +83,12 @@ internal class DefenceTree
         List<Threats> threats = JsonSerializer.Deserialize<List<Threats>>(jsonString);
 
         return threats;
+        // O(n)
     }
 
 
 
-
+    //פונקציית עזר שמוצאת את ה NODE המתאים לאיום
     private static Node Find(Threats threat, Node Root)
     {
         Node root = new Node();
@@ -130,10 +132,11 @@ internal class DefenceTree
                 }
             }
         }
+        //O(!n)
     }
 
 
-
+    //מציאת האיום המתאים
     public static int FindTheProperNode()
     {
         List<Threats> threats = InsertFromJsonThreats();
@@ -151,14 +154,16 @@ internal class DefenceTree
             else Console.WriteLine("No suitable defence was found. Brace for impact");
         }
         return -1;
+        //O(n)
 
     }
-
+    //פונקציית ההדפסה
     public static void PrintTree()
     {
         PrintTree(Root.Right, "", true);
     }
 
+    //פונקציית עזר להדפסה
     private static void PrintTree(Node node, string indent, bool last)
     {
         if (node != null)
@@ -179,6 +184,7 @@ internal class DefenceTree
             PrintTree(node.Left, indent, false);
             PrintTree(node.Right, indent, true);
         }
+        //O(!n)
     }
 
 }
