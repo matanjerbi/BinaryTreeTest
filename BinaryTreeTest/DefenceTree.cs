@@ -7,30 +7,12 @@ internal class DefenceTree
 {
     public static Node Root { get; set; }
 
-    public enum ResourceType
-    {
-        WebServer = 10,
-        Database = 15,
-        UserCredentials = 20,
-        Other = 5
-    }
     //פונקציה שקוראת קובץ json של NODE
     public static List<Node> InsertFromJson()
     {
         string filePath = @"C:\Users\Lenovo\Desktop\AA\BinaryTreeTest\BinaryTreeTest\NodesFile.json";
 
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine("The file does not exist.");
-            return new List<Node>();
-        }
-
-        string jsonString = File.ReadAllText(filePath);
-        List<Node> nodes = JsonSerializer.Deserialize<List<Node>>(jsonString);
-
-        return nodes;
-
-        // O(n)
+        return ReadFromJson<List<Node>>(filePath);
     }
 
     //פונקצייה שרצה על כל ה NODE ומכניסה לעץ
@@ -66,27 +48,24 @@ internal class DefenceTree
         return root;
         //O(!n)
     }
-    
 
-    //פונקציית קריאה מ JSON של איומים
+    //פונקציה שקוראת איומים
     public static List<Threats> InsertFromJsonThreats()
     {
         string filePath = @"C:\Users\Lenovo\Desktop\AA\BinaryTreeTest\BinaryTreeTest\Threats.json";
 
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine("The file does not exist.");
-            return new List<Threats>();
-        }
-
-        string jsonString = File.ReadAllText(filePath);
-        List<Threats> threats = JsonSerializer.Deserialize<List<Threats>>(jsonString);
-
-        return threats;
-        // O(n)
+        return ReadFromJson<List<Threats>>(filePath);
     }
 
 
+    // פונקציה לקרוא JSON מקובץ ולהמירו לאובייקט מהסוג T
+    public static T ReadFromJson<T>(string filePath)
+    {
+        string jsonString = File.ReadAllText(filePath);
+        return JsonSerializer.Deserialize<T>(jsonString);
+    }
+
+    //פונקציית עזר שמוצאת את הסדר גודל שך האיום 
     private static int FindThreatTarget(Threats threat)
     {
         int threatTarget = 0;
@@ -119,21 +98,16 @@ internal class DefenceTree
         else
         {
             {
-
                 int threatTarget = FindThreatTarget(threat);
                 int severity = threat.Volume * threat.Sophistication + threatTarget;
 
                 if (severity >= Root.MinSeverity && severity <= Root.MaxSeverity) return root;
                 else
                 {
-                    if (severity > Root.MaxSeverity)
-                    {
-                        return Find(threat, root.Right);
-                    }
-                    else
-                    {
-                        return Find(threat, root.Left);
-                    }
+                    if (severity > Root.MaxSeverity) return Find(threat, root.Right);
+
+                    else return Find(threat, root.Left);
+
                 }
             }
         }
@@ -159,7 +133,6 @@ internal class DefenceTree
         }
         return -1;
         //O(n)
-
     }
     //פונקציית ההדפסה
     public static void PrintTree()
@@ -190,6 +163,5 @@ internal class DefenceTree
         }
         //O(!n)
     }
-
 }
 
