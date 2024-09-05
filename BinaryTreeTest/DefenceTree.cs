@@ -39,7 +39,7 @@ namespace BinaryTreeTest
             string jsonString = File.ReadAllText(filePath);
             var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Node>>(jsonString);
             var trees = new Dictionary<string, Node>();
-
+             
         }
 
     }
