@@ -28,17 +28,6 @@ internal class DefenceTree
         string jsonString = File.ReadAllText(filePath);
         List<Node> nodes = JsonSerializer.Deserialize<List<Node>>(jsonString);
 
-        //foreach (var node in nodes)
-        //{
-        //    Console.WriteLine($"MinSeverity: {node.MinSeverity}, MaxSeverity: {node.MaxSeverity}");
-        //    Console.WriteLine("Defenses:");
-        //    foreach (var defense in node.Defenses)
-        //    {
-        //        Console.WriteLine($"- {defense}");
-        //    }
-        //    Console.WriteLine();
-        //}
-
         return nodes;
     }
 
@@ -79,21 +68,6 @@ internal class DefenceTree
         PrintInOrder(root.Right);
     }
 
-    public static void PrintTree1(Node root, string indent = "", bool isLeft = true)
-    {
-        if (root != null)
-        {
-            // Print right subtree
-            PrintTree(root.Right, indent + (isLeft ? "│   " : "    "), false);
-
-            // Print current node
-            Console.WriteLine(indent + (isLeft ? "└── " : "┌── ") + root.MinSeverity);
-
-            // Print left subtree
-            PrintTree(root.Left, indent + (isLeft ? "    " : "│   "), true);
-        }
-    }
-
     public static List<Threats> InsertFromJsonThreats()
     {
         string filePath = @"C:\Users\Lenovo\Desktop\AA\BinaryTreeTest\BinaryTreeTest\Threats.json";
@@ -107,18 +81,13 @@ internal class DefenceTree
         string jsonString = File.ReadAllText(filePath);
         List<Threats> threats = JsonSerializer.Deserialize<List<Threats>>(jsonString);
 
-        //foreach (var threat in threats)
-        //{
-        //    Console.WriteLine($"Target: {threat.Target}, Volume: {threat.Volume}");
-            
-            
-        //    Console.WriteLine();
-        //}
-
         return threats;
     }
 
-    public static Node Find(Threats threat, Node Root)
+
+
+
+    private static Node Find(Threats threat, Node Root)
     {
         Node root = new Node();
         root = Root;
@@ -179,8 +148,8 @@ internal class DefenceTree
                 Thread.Sleep(2000);
                 Console.WriteLine($", {node.Defenses[1]}");
             }
+            else Console.WriteLine("No suitable defence was found. Brace for impact");
         }
-        Console.WriteLine("Attack severity is below the threshold Attack is ignored");
         return -1;
 
     }
