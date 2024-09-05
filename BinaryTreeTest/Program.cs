@@ -12,7 +12,7 @@ public class Program
     {
         DefenceTree.InsertFromJson();
         DefenceTree.CreateTree();
-        //DefenceTree.PrintTree();
+        DefenceTree.PrintTree();
         DefenceTree.FindTheProperNode();
 
     }

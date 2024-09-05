@@ -66,8 +66,8 @@ internal class DefenceTree
         return root;
         //O(!n)
     }
-
     
+
     //פונקציית קריאה מ JSON של איומים
     public static List<Threats> InsertFromJsonThreats()
     {
@@ -87,6 +87,28 @@ internal class DefenceTree
     }
 
 
+    private static int FindThreatTarget(Threats threat)
+    {
+        int threatTarget = 0;
+        switch (threat.ThreatType)
+        {
+            case "Web Server":
+                threatTarget = 10;
+                break;
+            case "Database":
+                threatTarget = 15;
+                break;
+            case "User Credentials":
+                threatTarget = 20;
+                break;
+            default:
+                threatTarget = 5;
+                break;
+        }
+        return threatTarget;
+        //O(1)
+    }
+
 
     //פונקציית עזר שמוצאת את ה NODE המתאים לאיום
     private static Node Find(Threats threat, Node Root)
@@ -97,31 +119,14 @@ internal class DefenceTree
         else
         {
             {
-                int threatTarget = 0;
-                switch (threat.ThreatType)
-                {
-                    case "Web Server":
-                        threatTarget = 10;
-                        break;
-                    case "Database":
-                        threatTarget = 15;
-                        break;
-                    case "User Credentials":
-                        threatTarget = 20;
-                        break;
-                    default:
-                        threatTarget = 5;
-                        break;
-                }
 
-                if (threat.Volume * threat.Sophistication + threatTarget >= Root.MinSeverity
-                    && threat.Volume * threat.Sophistication + threatTarget <= Root.MaxSeverity)
-                {
-                    return root;
-                }
+                int threatTarget = FindThreatTarget(threat);
+                int severity = threat.Volume * threat.Sophistication + threatTarget;
+
+                if (severity >= Root.MinSeverity && severity <= Root.MaxSeverity) return root;
                 else
                 {
-                    if (threat.Volume * threat.Sophistication + threatTarget > Root.MaxSeverity)
+                    if (severity > Root.MaxSeverity)
                     {
                         return Find(threat, root.Right);
                     }
@@ -134,7 +139,6 @@ internal class DefenceTree
         }
         //O(!n)
     }
-
 
     //מציאת האיום המתאים
     public static int FindTheProperNode()
